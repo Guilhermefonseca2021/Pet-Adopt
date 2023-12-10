@@ -10,7 +10,3 @@ interface User {
   createdAt: string;
   updatedAt: string;
 }
-
-export {
-  User
-}

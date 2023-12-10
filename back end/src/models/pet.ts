@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-var userSchema = new mongoose.Schema({
+var petSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -9,23 +9,30 @@ var userSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    description: {
+      type: String,
+    },
     weight: {
-        type: String,
-        required: true
+      type: Number,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
     },
     images: {
-        type: Array,
-        required: true
+      type: Array,
+      required: true,
     },
     available: {
-        type: Boolean
+      type: Boolean,
     },
     user: Object,
-    adopter: Object
+    adopter: Object,
 }, {
     timestamps: true
 });
 
-//Export the model
-const Pet = mongoose.model('Pet', userSchema);
+const Pet = mongoose.model('Pet', petSchema);
 export default Pet
+

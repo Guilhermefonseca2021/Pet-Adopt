@@ -75,13 +75,117 @@ async function loginUser(req: Request, res: Response) {
       expiresIn: auth.expiresIn,
     });
 
-    res
-      .status(200)
-      .json({ message: "Login successfully", token: token });
+    res.status(200).json({ message: "Login successfully", token: token });
   } catch (err: any) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
-export { createUser, loginUser };
+async function checkUser(req: Request, res: Response) {
+  let currentUser;
+
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(token, auth.secret as string) as { id: string };
+
+    currentUser = await User.findById(decoded.id);
+
+    currentUser?.password ?? undefined;
+  } else {
+    currentUser = null;
+  }
+
+  res.status(200).json(currentUser);
+}
+
+async function getUserById(req: Request, res: Response) {
+  const id = req.params.id;
+
+  const user = await User.findById(id).select("-password");
+
+  if (!user) {
+    return res.status(422).json({
+      message: "User not found!",
+    });
+  }
+
+  res.status(200).json(user);
+}
+
+async function editUser(req: Request, res: Response) {
+  let currentUser;
+  const id = req.params.id;
+  const authHeader = req.headers.authorization;
+  const { name, email, password, confirmpassword, phone } = req.body;
+  let image = "";
+
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    if (!name || !email || !password || !confirmpassword || !phone) {
+      return res.status(422).json({ message: "Fill up all fields." });
+    }
+    
+    if (req.file) {
+      // multer already work at here in req.file as a middleware.
+      user.image  = req.file.filename;
+    }
+
+    if (authHeader) {
+      const token = authHeader.split(" ")[1];
+
+      const decoded = jwt.verify(token, auth.secret as string) as {
+        id: string;
+      };
+      
+      currentUser = await User.findById(decoded.id);
+
+      currentUser?.password ?? undefined;
+    } else {
+      currentUser = null;
+    }
+
+    if (password != confirmpassword) {
+      return res
+        .status(422)
+        .json({ message: "Make sure that confirmpassword is right." });
+    } else if (password === confirmpassword && password != null) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+      await user.save();
+    }
+
+    const userExists = await User.findOne({ email: email });
+
+    if (user?.email !== email && userExists) {
+      return res.status(422).json({ message: "Email is already in use." });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, {
+      name,
+      email,
+      password,
+      confirmpassword,
+      image,
+      phone,
+    });
+    
+    res.status(200).json({
+      message: "User updated",
+      user: updatedUser,
+    });
+  } catch (err: any) {
+    console.log(err.message);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+export { createUser, loginUser, checkUser, getUserById, editUser };

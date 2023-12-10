@@ -1,10 +1,22 @@
 import { Router } from "express";
-import { createUser, loginUser } from "../controllers/UserController";
+import {
+  checkUser,
+  createUser,
+  editUser,
+  getUserById,
+  loginUser,
+} from "../controllers/UserController";
+import checkToken from "./../middleware/verify-token";
+import { imageUpload } from "../middleware/image-upload";
 
-const routes = Router();
+const userRoutes = Router();
 
-routes.post("/register", createUser);
-routes.post("/login", loginUser);
+userRoutes.post("/register", createUser);
+userRoutes.post("/login", loginUser);
+userRoutes.get("/checkuser", checkUser);
+userRoutes.get("/:id", getUserById);
 
-export default routes;
- 
+userRoutes.use(checkToken);
+userRoutes.patch("/edit/:id", imageUpload.single("image"), editUser);
+  
+export default userRoutes;
