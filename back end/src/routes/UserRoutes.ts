@@ -18,5 +18,5 @@ userRoutes.get("/:id", getUserById);
 
 userRoutes.use(checkToken);
 userRoutes.patch("/edit/:id", imageUpload.single("image"), editUser);
-  
+
 export default userRoutes;

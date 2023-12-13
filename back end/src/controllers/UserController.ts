@@ -98,7 +98,7 @@ async function checkUser(req: Request, res: Response) {
   } else {
     currentUser = null;
   }
-
+  
   res.status(200).json(currentUser);
 }
 
@@ -129,13 +129,12 @@ async function editUser(req: Request, res: Response) {
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
-
+    
     if (!name || !email || !password || !confirmpassword || !phone) {
       return res.status(422).json({ message: "Fill up all fields." });
     }
     
     if (req.file) {
-      // multer already work at here in req.file as a middleware.
       user.image  = req.file.filename;
     }
 

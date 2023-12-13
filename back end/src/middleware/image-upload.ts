@@ -5,13 +5,13 @@ import fs from 'fs';
 const imageStorage = multer.diskStorage({
   destination: async function (req, file, cb) {
     let folder = "";
-
+    
     if (req.originalUrl.includes('users')) {
       folder = "users";
     } else if (req.originalUrl.includes('pets')) {
       folder = "pets";
     }
-    
+
     const destinationFolder = path.join(__dirname, `../public/images/${folder}`);
 
     try {
@@ -27,7 +27,6 @@ const imageStorage = multer.diskStorage({
     cb(null, destinationFolder);
   },
   filename: function (req, file, cb) {
-    // my origin name and where is folder...
     cb(null, `${Date.now()}${path.extname(file.originalname)}`);
   },
 });
@@ -36,7 +35,6 @@ const imageUpload = multer({
   storage: imageStorage,
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(png|jpg)$/)) {
-      // upload only png and jpg format
       return cb(new Error("Por favor, envie apenas png ou jpg!"));
     }
     cb(null, true);

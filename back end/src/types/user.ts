@@ -10,3 +10,12 @@ interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+interface Images {
+  Image: any
+}
+
+export {
+  User,
+  Images
+}
