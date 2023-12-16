@@ -11,7 +11,7 @@ const imageStorage = multer.diskStorage({
     } else if (req.originalUrl.includes('pets')) {
       folder = "pets";
     }
-
+    
     const destinationFolder = path.join(__dirname, `../public/images/${folder}`);
 
     try {
