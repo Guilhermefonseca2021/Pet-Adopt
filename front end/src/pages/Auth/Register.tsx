@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./styles.css";
+import { AuthContext } from "../../context/AuthContext";
 
 interface FormData {
   name: string;
@@ -24,6 +25,8 @@ const schema = z.object({
 
 export default function Register() {
   const [output, setOutput] = useState<FormData>();
+  console.log(output);
+  const auth = useContext(AuthContext)
   const {
     register,
     handleSubmit,
@@ -31,10 +34,22 @@ export default function Register() {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+  const navigate = useNavigate();
 
-  function onSubmit(data: FormData) {
+  async function onSubmit(data: FormData) {
+    if (data) {
+      const isLogged = await auth.register(
+        data.name,
+        data.email,
+        data.password
+      );
+      if (isLogged) {
+        navigate("/login");
+      } else {
+        alert("Something went wrong, verify you email or password.");
+      }
+    }
     setOutput(data);
-    console.log(output);
   }
 
   return (
