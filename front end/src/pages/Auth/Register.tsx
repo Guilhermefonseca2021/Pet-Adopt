@@ -10,10 +10,12 @@ interface FormData {
   name: string;
   email: string;
   password: string;
+  confirmpassword: string;
+  phone: string;
 }
 
 const schema = z.object({
-  name: z.string().min(3, { message: "Por favor ensira um nome valido." }),
+  name: z.string().min(3, { message: "Por favor insira um nome válido." }),
   email: z
     .string()
     .min(6, { message: "Este campo tem que ser preenchido." })
@@ -21,12 +23,19 @@ const schema = z.object({
   password: z
     .string()
     .min(6, { message: "A senha deve conter ao menos 6 caracteres" }),
+  confirmpassword: z
+    .string()
+    .min(6, { message: "Confirmação de senha inválida" }),
+  phone: z
+    .string()
+    .min(8, { message: "O telefone deve conter ao menos 6 caracteres" }),
 });
 
 export default function Register() {
   const [output, setOutput] = useState<FormData>();
   console.log(output);
-  const auth = useContext(AuthContext)
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -34,17 +43,18 @@ export default function Register() {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-  const navigate = useNavigate();
 
   async function onSubmit(data: FormData) {
     if (data) {
       const isLogged = await auth.register(
         data.name,
         data.email,
-        data.password
+        data.password,
+        data.confirmpassword,
+        data.phone,
       );
       if (isLogged) {
-        navigate("/login");
+        navigate("/");
       } else {
         alert("Something went wrong, verify you email or password.");
       }
@@ -56,17 +66,25 @@ export default function Register() {
     <form onSubmit={handleSubmit(onSubmit)} className="auth-page">
       <h2 style={{ textAlign: "center" }}>Login</h2>
 
-      <label htmlFor="name">Name</label>
+      <label htmlFor="name">Name:</label>
       <input {...register("name")} />
       {errors.name?.message && <p>{errors.name?.message}</p>}
 
-      <label htmlFor="email">Email</label>
+      <label htmlFor="phone">Telefone:</label>
+      <input type="number" {...register("phone")} />
+      {errors.phone?.message && <p>{errors.phone?.message}</p>}
+
+      <label htmlFor="email">Email:</label>
       <input type="email" {...register("email")} />
       {errors.email?.message && <p>{errors.email?.message}</p>}
 
-      <label htmlFor="password">Password</label>
-      <input type="string" {...register("password")} />
+      <label htmlFor="password">Senha:</label>
+      <input type="number" {...register("password")} />
       {errors.password?.message && <p>{errors.password?.message}</p>}
+
+      <label htmlFor="confirmpassword">Confirmacao de senha:</label>
+      <input type="number" {...register("confirmpassword")} />
+      {errors.confirmpassword?.message && <p>{errors.confirmpassword?.message}</p>}
 
       <button type="submit">Criar conta</button>
       <div className="info">

@@ -59,6 +59,7 @@ async function loginUser(req: Request, res: Response) {
     }
 
     const user = await User.findOne({ email });
+    
     if (!user) {
       return res.status(422).json({ message: "User do not exists." });
     }
@@ -140,10 +141,10 @@ async function editUser(req: Request, res: Response) {
 
     if (authHeader) {
       const token = authHeader.split(" ")[1];
-
+ 
       const decoded = jwt.verify(token, auth.secret as string) as {
         id: string;
-      };
+      }; 
       
       currentUser = await User.findById(decoded.id);
 

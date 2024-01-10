@@ -267,7 +267,7 @@ async function scheduleAdoption(req: Request, res: Response) {
 
     const decoded = jwt.verify(token, auth.secret as string) as { id: string };
     const user = await User.findById(decoded.id);
-
+    
     const pet = await Pet.findById(id);
 
     if (!pet) {
@@ -299,7 +299,7 @@ async function scheduleAdoption(req: Request, res: Response) {
       _id: user._id,
       name: user.name,
       image: user.image
-    }
+    } 
 
     await Pet.findByIdAndUpdate(id, pet)
 

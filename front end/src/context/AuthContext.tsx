@@ -1,10 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { User } from "../types/User";
 import { useAuth } from "../hooks/useAuth";
 
 export type AuthContextType = {
   user: User | null;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string, confirmpassword: string, phone: string) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
 };
 
@@ -16,8 +16,6 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
   console.log(token);
   const api = useAuth();
 
-  useEffect(() => {});
-
   async function login(email: string, password: string) {
     const data = await api.login(email, password);
     if (data) {
@@ -26,14 +24,14 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
 
       return true;
     }
-
+    
     return false;
   }
   
-  async function register(name: string, email: string, password: string) {
-    const data = await api.register(name, email, password);
+  async function register(name: string, email: string, password: string, confirmpassword: string, phone: string) {
+    const data = await api.register(name, email, password, confirmpassword, phone);
 
-    if (data.user) {
+    if (data) {
       setUser(data.user);
       setToken(data.token);
       return true;

@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./styles.css";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 interface FormData {
   email: string;
@@ -20,6 +22,8 @@ const schema = z.object({
 });
 
 export default function Login() {
+  const auth = useContext(AuthContext)
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -29,6 +33,18 @@ export default function Login() {
   });
 
   async function onSubmit(data: FormData) {
+    if (data) {
+      const isLogged = await auth.login(
+        data.email,
+        data.password
+      );
+      if (isLogged) {
+        navigate("/");
+      } else {
+        alert("Something went wrong, verify you email or password.");
+      }
+    }
+
     console.log(data);
   }
 
