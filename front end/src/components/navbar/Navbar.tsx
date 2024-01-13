@@ -6,6 +6,10 @@ import { AuthContext } from "../../context/AuthContext";
 
 export default function Navbar() {
   const auth = useContext(AuthContext);
+  function logout() {
+
+  }
+
   return (
     <nav className="navbar">
       <div>
@@ -18,13 +22,14 @@ export default function Navbar() {
           <NavLink to="/"> Adotar </NavLink>
         </li>
         {auth.user ? (
-          <div className="profile">
-            <p>Account</p>
-            <img
-              src="https://avatars.githubusercontent.com/u/92196697?v=4"
-              alt=""
-            />
-          </div>
+          <>
+          <li>
+            <NavLink to="/user/profile"> Profile </NavLink>
+          </li>
+          <li onClick={logout}>
+            Sair
+          </li>
+        </>
         ) : (
           <>
             <li>

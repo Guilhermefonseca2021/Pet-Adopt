@@ -3,12 +3,12 @@ import api from "../utils/api";
 export const useAuth = () => ({
   validateToken: async (token: string) => {
     try {
-      const response = await api.get(`/checkuser`, {
+      const response = await api.get(`/users/checkuser`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
+      
       return response.data;
     } catch (error) {
       console.error("Erro ao validar token:", error);
@@ -23,7 +23,7 @@ export const useAuth = () => ({
     return response.data;
   },
   logout: async () => {
-    const response = await api.post("/signout");
+    const response = await api.post("/users/logout");
     return response.data;
   },
 });

@@ -30,5 +30,13 @@
     background-color: blue;
 }
 
+.navbar .profile {
+    display: flex;
+    font-weight: 700;
+    height: 20px;
+    gap: .5rem;
+}
 
-
+.navbar .profile:hover {
+    cursor: pointer;
+}

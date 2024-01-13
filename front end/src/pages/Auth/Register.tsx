@@ -28,7 +28,7 @@ const schema = z.object({
     .min(6, { message: "Confirmação de senha inválida" }),
   phone: z
     .string()
-    .min(8, { message: "O telefone deve conter ao menos 6 caracteres" }),
+    .min(8, { message: "Digite um numero valido." }),
 });
 
 export default function Register() {
@@ -43,7 +43,7 @@ export default function Register() {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-
+  
   async function onSubmit(data: FormData) {
     if (data) {
       const isLogged = await auth.register(

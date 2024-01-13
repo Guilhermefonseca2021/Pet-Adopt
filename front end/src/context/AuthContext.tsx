@@ -18,11 +18,8 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
   useEffect(() => {
     async function validateToken() {
       const storageData = localStorage.getItem("authToken");
-      
       if (storageData) {
-        console.log(storageData)
         const data = await api.validateToken(storageData);
-        console.log(data)
 
         if (data.user) {
           setUser(data.user);
@@ -30,7 +27,7 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
       }
     }
     validateToken();
-  }, [api])
+  }, [api]);
 
   async function login(email: string, password: string) {
     const data = await api.login(email, password);

@@ -31,6 +31,8 @@ async function createUser(req: Request, res: Response) {
       phone,
     });
 
+    await newUser.save()
+
     const token = jwt.sign({ id: newUser._id }, auth.secret as string, {
       expiresIn: auth.expiresIn,
     });
@@ -100,7 +102,7 @@ async function checkUser(req: Request, res: Response) {
     currentUser = null;
   }
   
-  res.status(200).json(currentUser);
+  res.status(200).json({ user: currentUser});
 }
 
 async function getUserById(req: Request, res: Response) {
@@ -133,7 +135,7 @@ async function editUser(req: Request, res: Response) {
     
     if (!name || !email || !password || !confirmpassword || !phone) {
       return res.status(422).json({ message: "Fill up all fields." });
-    }
+    } 
     
     if (req.file) {
       user.image  = req.file.filename;
