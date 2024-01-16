@@ -6,7 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "../../context/AuthContext";
 
-interface FormData {
+export interface FormData {
   name: string;
   email: string;
   password: string;
@@ -61,7 +61,7 @@ export default function Register() {
     }
     setOutput(data);
   }
-
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="auth-page">
       <h2 style={{ textAlign: "center" }}>Login</h2>

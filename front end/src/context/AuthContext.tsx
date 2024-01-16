@@ -7,6 +7,7 @@ export type AuthContextType = {
   register: (name: string, email: string, password: string, confirmpassword: string, phone: string) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  updateUser: (name: string, email: string, password: string, confirmpassword: string, phone: string) => Promise<boolean>;
 };
 
 export const AuthContext = createContext<AuthContextType>(null!);
@@ -62,8 +63,21 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
     setUser(null);
   }
 
+  async function updateUser(name: string, email: string, password: string, confirmpassword: string, phone: string) {
+    const data = await api.updateUser(name, email, password, confirmpassword, phone);
+    
+    if (data) {
+      setUser(data.user);
+      setToken(data.token);
+
+      return true;
+    }
+
+    return false;
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, updateUser, login, register, logout}}>
       {children}
     </AuthContext.Provider>
   );
