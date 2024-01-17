@@ -6,7 +6,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./styles.css";
 import { AuthContext } from "../../context/AuthContext";
 
-export interface FormData {
+export interface FormDataProps {
+  image: File;
   name: string;
   email: string;
   password: string;
@@ -32,7 +33,7 @@ const schema = z.object({
 });
 
 export default function Register() {
-  const [output, setOutput] = useState<FormData>();
+  const [output, setOutput] = useState<FormDataProps>();
   console.log(output);
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
@@ -40,11 +41,11 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormDataProps>({
     resolver: zodResolver(schema),
   });
   
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: FormDataProps) {
     if (data) {
       const isLogged = await auth.register(
         data.name,

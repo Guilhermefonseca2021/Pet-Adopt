@@ -26,8 +26,8 @@ export const useAuth = () => ({
     const response = await api.post("/users/logout");
     return response.data;
   },
-  updateUser: async (name: string, email: string, password: string, confirmpassword: string, phone: string) => {
-    const response = await api.patch('/users/edit/:id', { name, email, password, confirmpassword, phone});
+  updateUser: async (image: File, name: string, email: string, password: string, confirmpassword: string, phone: string) => {
+    const response = await api.patch('/users/edit/:id', { image, name, email, password, confirmpassword, phone});
     return response.data;
   },
 });

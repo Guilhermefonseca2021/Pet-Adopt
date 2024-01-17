@@ -11,7 +11,7 @@ export default function Router() {
       <Route path='/' element={<Home />} />
       <Route path='/register' element={<Register />} />
       <Route path='/login' element={<Login />} />
-      <Route path='/user/profile/' element={<Profile />} />
+      <Route path='/user/profile/:id' element={<Profile />} />
     </Routes>
   )
 }
