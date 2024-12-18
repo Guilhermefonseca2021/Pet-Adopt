@@ -1,5 +1,5 @@
 import "./App.css";
-import Layout from "./components/layout/Layout";
+import Layout from "./pages/_layout/Layout";
 import { AuthProvider } from "./context/AuthContext";
 
 export default function App() {

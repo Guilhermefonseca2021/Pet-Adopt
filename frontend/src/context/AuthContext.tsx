@@ -35,7 +35,6 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
     if (data) {
       setUser(data.user);
       setToken(data.token);
-
       return true;
     }
     
