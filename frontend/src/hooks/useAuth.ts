@@ -18,15 +18,15 @@ export const useAuth = () => ({
     const response = await api.post("/users/login", { email, password });
     return response.data;
   },
-  register: async (name: string, email: string, password: string, confirmpassword: string, phone: string) => {
-    const response = await api.post("/users/register", { name, email, password, confirmpassword, phone});
+  register: async (name: string, email: string, image: FileList, password: string, confirmpassword: string, phone: string) => {
+    const response = await api.post("/users/register", { name, email, image, password, confirmpassword, phone});
     return response.data;
   },
   logout: async () => {
     const response = await api.post("/users/logout");
     return response.data;
   },
-  updateUser: async (image: File, name: string, email: string, password: string, confirmpassword: string, phone: string) => {
+  updateUser: async (image: FileList, name: string, email: string, password: string, confirmpassword: string, phone: string) => {
     const response = await api.patch('/users/edit/:id', { image, name, email, password, confirmpassword, phone});
     return response.data;
   },

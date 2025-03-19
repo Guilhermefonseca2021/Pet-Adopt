@@ -1,13 +1,31 @@
 import { createContext, useEffect, useState } from "react";
-import { User } from "../types/User";
 import { useAuth } from "../hooks/useAuth";
+
+type User = {
+  _id: string;
+  name: string;
+  email: string;
+  image: FileList;
+  password: string;
+  confirmpassword: string;
+  phone: string;
+};
 
 export type AuthContextType = {
   user: User | null;
-  register: (name: string, email: string, password: string, confirmpassword: string, phone: string) => Promise<boolean>;
+  register: (
+    name: string, email: string, image: FileList, password: string, confirmpassword: string, phone: string
+  ) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  updateUser: (image: File, name: string, email: string, password: string, confirmpassword: string, phone: string) => Promise<boolean>;
+  updateUser: (
+    image: FileList,
+    name: string,
+    email: string,
+    password: string,
+    confirmpassword: string,
+    phone: string
+  ) => Promise<boolean>;
 };
 
 export const AuthContext = createContext<AuthContextType>(null!);
@@ -37,16 +55,25 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
       setToken(data.token);
       return true;
     }
-    
+
     return false;
   }
 
   async function setToken(token: string) {
     localStorage.setItem("authToken", token);
   }
-  
-  async function register(name: string, email: string, password: string, confirmpassword: string, phone: string) {
-    const data = await api.register(name, email, password, confirmpassword, phone);
+
+  async function register(
+    name: string, email: string, image: FileList, password: string, confirmpassword: string, phone: string
+  ) {
+    const data = await api.register(
+      name,
+      email,
+      image,
+      password,
+      confirmpassword,
+      phone
+    );
 
     if (data) {
       setUser(data.user);
@@ -62,9 +89,23 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
     setUser(null);
   }
 
-  async function updateUser(image: File, name: string, email: string, password: string, confirmpassword: string, phone: string) {
-    const data = await api.updateUser(image, name, email, password, confirmpassword, phone);
-    
+  async function updateUser(
+    image: FileList,
+    name: string,
+    email: string,
+    password: string,
+    confirmpassword: string,
+    phone: string
+  ) {
+    const data = await api.updateUser(
+      image,
+      name,
+      email,
+      password,
+      confirmpassword,
+      phone
+    );
+
     if (data) {
       setUser(data.user);
       setToken(data.token);
@@ -76,7 +117,7 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, updateUser, login, register, logout}}>
+    <AuthContext.Provider value={{ user, updateUser, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

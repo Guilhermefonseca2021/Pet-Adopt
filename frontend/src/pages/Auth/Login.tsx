@@ -50,7 +50,7 @@ export default function Login() {
       <Helmet title="login" />
 
       <div className="flex flex-col justify-center items-center space-y-2">
-        <h2 className="text-2xl font-medium text-slate-700 font-bold">Login</h2>
+        <h2 className="text-2xl text-slate-700 font-bold">Login</h2>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-4 space-y-3">
         <div>

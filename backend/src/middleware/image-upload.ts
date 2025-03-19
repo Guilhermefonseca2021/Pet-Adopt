@@ -12,7 +12,7 @@ const imageStorage = multer.diskStorage({
       folder = "pets";
     }
     
-    const destinationFolder = path.join(__dirname, `../public/images/${folder}`);
+    const destinationFolder = path.join(__dirname, `../_public/images/${folder}`);
 
     try {
       await fs.promises.access(destinationFolder, fs.constants.F_OK);

@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
 export default {
-    secret: process.env.APP_SECRET,
+    secret: process.env.JWT_SECRET,
     expiresIn: "15d"
 }

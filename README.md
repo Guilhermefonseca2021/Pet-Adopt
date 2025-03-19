@@ -31,13 +31,11 @@ Node.js v16 ou superior, Vscode para rodar o codigo.
 
 ```bash
 $  Clone o repositorio
-git clone https://github.com/seu-usuario/adocao-de-pets.git
+git clone https://github.com/seu-usuario/adote-um-pet.git
 $  Instale as dependencias
 npm install
 $  Rode o servidor:
 npm run dev
-$  Acesse no navegador:
-http://localhost:3000
 ```
 
 [👉 Clique aqui para testar a aplicação](https://adote-um-pet-mu.vercel.app/)
@@ -45,7 +43,7 @@ http://localhost:3000
 <h2>📂 Estrutura do Projeto</h2>
 
 <pre>
-📦quiz-app
+📦Petshop
  ┣ 📂backend
  ┃ ┣ 📂src
  ┃ ┣ ┣ 📂config

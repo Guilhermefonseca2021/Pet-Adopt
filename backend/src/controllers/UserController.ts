@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
-import User from "../models/user";
+import User from "../models/userSchema";
 import auth from "../config/auth";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 async function createUser(req: Request, res: Response) {
-  const { name, email, password, confirmpassword, image, phone } = req.body;
+  const { name, email, password, confirmpassword, phone } = req.body;
+  const image = req.file
 
   try {
     if (!name || !email || !password || !confirmpassword || !phone) {
@@ -29,9 +30,9 @@ async function createUser(req: Request, res: Response) {
       password: hashedPassword,
       image,
       phone,
-    });
+    })
 
-    await newUser.save()
+    await newUser.save();
 
     const token = jwt.sign({ id: newUser._id }, auth.secret as string, {
       expiresIn: auth.expiresIn,
@@ -61,7 +62,7 @@ async function loginUser(req: Request, res: Response) {
     }
 
     const user = await User.findOne({ email });
-    
+
     if (!user) {
       return res.status(422).json({ message: "User do not exists." });
     }
@@ -101,8 +102,8 @@ async function checkUser(req: Request, res: Response) {
   } else {
     currentUser = null;
   }
-  
-  res.status(200).json({ user: currentUser});
+
+  res.status(200).json({ user: currentUser });
 }
 
 async function getUserById(req: Request, res: Response) {
@@ -132,22 +133,22 @@ async function editUser(req: Request, res: Response) {
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
-    
+
     if (!name || !email || !password || !confirmpassword || !phone) {
       return res.status(422).json({ message: "Fill up all fields." });
-    } 
-    
+    }
+
     if (req.file) {
-      user.image  = req.file.filename;
+      user.image = req.file.filename;
     }
 
     if (authHeader) {
       const token = authHeader.split(" ")[1];
- 
+
       const decoded = jwt.verify(token, auth.secret as string) as {
         id: string;
-      }; 
-      
+      };
+
       currentUser = await User.findById(decoded.id);
 
       currentUser?.password ?? undefined;
@@ -179,7 +180,7 @@ async function editUser(req: Request, res: Response) {
       image,
       phone,
     });
-    
+
     res.status(200).json({
       message: "User updated",
       user: updatedUser,

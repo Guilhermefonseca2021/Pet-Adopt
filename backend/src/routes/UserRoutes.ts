@@ -11,7 +11,7 @@ import { imageUpload } from "../middleware/image-upload";
 
 const userRoutes = Router();
 
-userRoutes.post("/register", createUser);
+userRoutes.post("/register", imageUpload.single("image"), createUser);
 userRoutes.post("/login", loginUser);
 userRoutes.get("/checkuser", checkUser);
 userRoutes.get("/:id", getUserById);

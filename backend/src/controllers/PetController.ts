@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
-import Pet from "../models/pet";
+import Pet from "../models/petSchema";
 import auth from "../config/auth";
 import jwt from "jsonwebtoken";
-import User from "../models/user";
+import User from "../models/userSchema";
 import { ObjectId } from "mongodb";
-import petRoutes from "./../routes/PetRoutes";
-import { UpdateData } from "../types/pet";
 
 async function create(req: Request, res: Response) {
   const { name, age, description, weight, color } = req.body;
@@ -72,7 +70,7 @@ async function create(req: Request, res: Response) {
 async function getAll(req: Request, res: Response) {
   try {
     const pets = await Pet.find({}).sort("-createdAt");
-
+    
     res.status(200).json({
       pets: pets,
     });
@@ -267,7 +265,7 @@ async function scheduleAdoption(req: Request, res: Response) {
 
     const decoded = jwt.verify(token, auth.secret as string) as { id: string };
     const user = await User.findById(decoded.id);
-    
+
     const pet = await Pet.findById(id);
 
     if (!pet) {
@@ -288,22 +286,22 @@ async function scheduleAdoption(req: Request, res: Response) {
 
     if (pet.adopter) {
       if (pet.adopter._id.equals(user._id)) {
-        return res
-          .status(422)
-          .json({ message: "You already schedule." });
+        return res.status(422).json({ message: "You already schedule." });
       }
-      return
+      return;
     }
 
     pet.adopter = {
       _id: user._id,
       name: user.name,
-      image: user.image
-    } 
+      image: user.image,
+    };
 
-    await Pet.findByIdAndUpdate(id, pet)
+    await Pet.findByIdAndUpdate(id, pet);
 
-    res.status(200).json({ message: 'Schedule with successfull contact the owner',pet })
+    res
+      .status(200)
+      .json({ message: "Schedule with successfull contact the owner", pet });
   } catch (err: any) {
     return res.status(500).json({ error: "Internal Server Error" });
   }

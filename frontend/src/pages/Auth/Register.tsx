@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
 import { Helmet } from "react-helmet";
+import { useAuth } from "../../hooks/useAuth";
+import api from "../../utils/api";
 
 export interface FormDataProps {
-  image: File;
+  image: FileList;
   name: string;
   email: string;
   password: string;
@@ -15,8 +15,18 @@ export interface FormDataProps {
   phone: string;
 }
 
+
 const schema = z.object({
   name: z.string().min(3, { message: "Por favor insira um nome válido." }),
+  image: z
+    .instanceof(FileList)
+    .refine(files => files.length === 1, { message: "Por favor, envie apenas uma imagem." })
+    .refine(
+      files =>
+        files.length > 0 &&
+        ["image/jpeg", "image/png", "image/jpg"].includes(files[0]?.type),
+      { message: "O arquivo deve ser uma imagem (JPG ou PNG)." }
+    ),
   email: z
     .string()
     .min(6, { message: "Este campo tem que ser preenchido." })
@@ -27,14 +37,14 @@ const schema = z.object({
   confirmpassword: z
     .string()
     .min(6, { message: "Confirmação de senha inválida" }),
-  phone: z.string().min(8, { message: "Digite um numero valido." }),
+  phone: z.string().min(8, { message: "Digite um número válido." }),
 });
 
+
 export default function Register() {
-  const [output, setOutput] = useState<FormDataProps>();
-  console.log(output);
   const navigate = useNavigate();
-  const auth = useContext(AuthContext);
+  const auth = useAuth()
+
   const {
     register,
     handleSubmit,
@@ -44,28 +54,33 @@ export default function Register() {
   });
 
   async function onSubmit(data: FormDataProps) {
-    if (data) {
-      const isLogged = await auth.register(
-        data.name,
-        data.email,
-        data.password,
-        data.confirmpassword,
-        data.phone
-      );
-      if (isLogged) {
-        navigate("/");
+    // const formData = new FormData();
+    // formData.append("name", data.name);
+    // formData.append("email", data.email);
+    // formData.append("password", data.password);
+    // formData.append("confirmpassword", data.confirmpassword);
+    // formData.append("phone", data.phone);
+    // formData.append("image", data.image[0]);
+  
+    try {
+      const response = auth.register(data.name, data.email, data.image, data.password, data.confirmpassword, data.phone)
+  
+      if (await response) {
+        navigate("/"); 
       } else {
-        alert("Something went wrong, verify you email or password.");
+        alert("Algo deu errado, por favor tente novamente.");
       }
+    } catch (error) {
+      console.error("Erro no registro:", error);
+      alert("Algo deu errado, por favor tente novamente.");
     }
-    setOutput(data);
   }
-
+  
   return (
     <div>
       <Helmet title="register" />
       <div className="flex flex-col justify-center items-center space-y-2">
-        <h2 className="text-2xl font-medium text-slate-700">Login</h2>
+        <h2 className="text-2xl font-medium text-slate-700">Criar conta</h2>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-4 space-y-3">
         <div>
@@ -147,14 +162,29 @@ export default function Register() {
             Forgot Password
           </a>
         </div>
+        <div>
+          <label htmlFor="image">Imagem de perfil:</label>
+          <input
+            id="image"
+            type="file"
+            accept="image/*"
+            {...register("image")}
+            className="flex h-10 w-full rounded-md border border-input bg-white px-3 py-2 text-sm text-gray-400"
+          />
+          {errors.image && (
+            <p className="text-red-500">{errors.image.message}</p>
+          )}
+        </div>
+
         <button
           className="w-full justify-center py-1 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 rounded-md text-white ring-2"
-          id="login"
-          name="login"
+          id="register"
+          name="register"
           type="submit"
         >
-          login
+          Criar conta
         </button>
+
         <p className="flex justify-center space-x-1">
           <span className="text-slate-700"> Já tem conta? </span>
           <NavLink to="/login" className="text-blue-500 hover:underline">

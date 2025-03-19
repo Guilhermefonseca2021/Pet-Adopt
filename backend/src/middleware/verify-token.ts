@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/user";
+import User from "../models/userSchema";
 import auth from "../config/auth";
 
 async function checkToken(req: Request, res: Response, next: NextFunction) {
@@ -13,7 +13,7 @@ async function checkToken(req: Request, res: Response, next: NextFunction) {
   try {
     const decoded = jwt.verify(token, auth.secret as string) as { id: string };
     const user = await User.findById(decoded.id);
-    
+
     if (!user) {
       return res.status(401).json({ message: "Unauthorized - User not found" });
     }
