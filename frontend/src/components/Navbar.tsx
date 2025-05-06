@@ -33,14 +33,17 @@ export default function Navbar() {
         id="menu"
       >
         <nav>
-          <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
+          <ul className="md:flex items-center gap-5 justify-between text-gray-700 pt-4 md:pt-0">
             <li>
-              <a href="#">Sobre</a>
+              <NavLink to="/about" className="text-xl">
+                Sobre
+              </NavLink>
             </li>
+
             <li>
-              <a className="md:p-4 py-3 px-0 block" href="#">
+              <NavLink to="/cares" className="text-xl">
                 Tratamentos
-              </a>
+              </NavLink>
             </li>
             {auth.user ? (
               <>
