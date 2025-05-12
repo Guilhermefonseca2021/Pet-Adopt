@@ -17,7 +17,7 @@ export default function Cardpet({ id, number, imgUrl, title, description }: Card
       </div>
       <div className="p-2 flex justify-center">
         <a href="#">
-          <img className="rounded-md" src={imgUrl} loading="lazy" />
+          <img className="rounded-md" src={imgUrl} width={124}  loading="lazy" />
         </a>
       </div>
 

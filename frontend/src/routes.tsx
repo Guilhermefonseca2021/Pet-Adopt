@@ -4,6 +4,7 @@ import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
 import Profile from "./pages/Profile";
 import Adopt from "./pages/Adopt";
+import About from "./pages/About";
 
 export default function Router() {
   return (
@@ -11,6 +12,7 @@ export default function Router() {
       <Route path="/" element={<Home />} />
       <Route path="/adopt/:id" element={<Adopt />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       <Route path="/user/profile/:id" element={<Profile />} />
     </Routes>

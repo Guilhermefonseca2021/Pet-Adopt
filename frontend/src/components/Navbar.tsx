@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import Icon from '../../public/favicon.ico'
 
 export default function Navbar() {
   const auth = useContext(AuthContext);
@@ -8,8 +9,9 @@ export default function Navbar() {
 
   return (
     <header className="lg:px-16 px-4 bg-white flex flex-wrap items-center py-4 shadow-md">
-      <div className="flex-1 flex justify-between items-center">
-        <NavLink to="/" className="text-xl">
+      <div className="flex-1 flex items-center gap-2">
+        <img src={Icon} alt="" width={22} />
+        <NavLink to="/" className="text-xl font-light">
           PetShop
         </NavLink>
       </div>
@@ -33,32 +35,31 @@ export default function Navbar() {
         id="menu"
       >
         <nav>
-          <ul className="md:flex items-center gap-5 justify-between text-gray-700 pt-4 md:pt-0">
+          <ul className="md:flex items-center gap-2 justify-between text-gray-700 pt-4 md:pt-0">
             <li>
-              <NavLink to="/about" className="text-xl">
+              <NavLink to="/about" className="text-md hover:text-blue-700 transition-all">
                 Sobre
               </NavLink>
             </li>
-
             <li>
-              <NavLink to="/cares" className="text-xl">
+              <NavLink to="/cares" className="text-md hover:text-blue-700 transition-all">
                 Tratamentos
               </NavLink>
             </li>
             {auth.user ? (
               <>
-                <li className="md:p-4 py-3 px-0 block">
-                  <NavLink to="/user/profile" className="hover:text-blue-700"> Perfil </NavLink>
+                <li>
+                  <NavLink to="/user/profile" className="text-md hover:text-blue-700 transition-all"> Perfil </NavLink>
                 </li>
                 <li onClick={logout}>Sair</li>
               </>
             ) : (
               <>
-                <li className="md:p-4 py-3 px-0 block">
-                    <NavLink to="/login" className="hover:text-blue-700 transition-all"> Login </NavLink>
+                <li>
+                    <NavLink to="/login" className="text-md hover:text-blue-700 transition-all"> Login </NavLink>
                 </li>
-                <li className="md:p-4 py-3 px-0 block">
-                  <NavLink to="/register" className="hover:text-blue-700"> Cadastrar </NavLink>
+                <li>
+                  <NavLink to="/register" className="text-md hover:text-blue-700 transition-all"> Cadastrar </NavLink>
                 </li>
               </>
             )}

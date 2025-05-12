@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <div>
       <Navbar />
-      <main className="min-h-screen flex justify-center rounded-lg shadow p-6 bg-white relative overflow-hidden">
+      <main className="min-h-screen flex justify-center rounded-lg shadow p-2 bg-white relative overflow-hidden">
         <Router />
       </main>
       <Footer />

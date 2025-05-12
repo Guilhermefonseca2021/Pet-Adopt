@@ -4,7 +4,6 @@ import * as z from "zod";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../../hooks/useAuth";
-import api from "../../utils/api";
 
 export interface FormDataProps {
   image: FileList;
@@ -54,13 +53,6 @@ export default function Register() {
   });
 
   async function onSubmit(data: FormDataProps) {
-    // const formData = new FormData();
-    // formData.append("name", data.name);
-    // formData.append("email", data.email);
-    // formData.append("password", data.password);
-    // formData.append("confirmpassword", data.confirmpassword);
-    // formData.append("phone", data.phone);
-    // formData.append("image", data.image[0]);
   
     try {
       const response = auth.register(data.name, data.email, data.image, data.password, data.confirmpassword, data.phone)
@@ -77,10 +69,11 @@ export default function Register() {
   }
   
   return (
-    <div>
-      <Helmet title="register" />
-      <div className="flex flex-col justify-center items-center space-y-2">
-        <h2 className="text-2xl font-medium text-slate-700">Criar conta</h2>
+    <div className="w-full max-w-2xl overflow-visible bg-gradient-to-l from-slate-300 to-slate-100 text-slate-600 border border-slate-300 grid grid-col-2 justify-center p-4 gap-4 rounded-lg shadow-md">
+
+      <Helmet title="Cadastrar" />
+      <div className="mt-14   flex flex-col justify-center items-center space-y-2">
+        <h2 className="text-2xl text-slate-700 font-bold">Criar conta</h2>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-4 space-y-3">
         <div>

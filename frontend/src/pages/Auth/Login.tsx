@@ -46,13 +46,13 @@ export default function Login() {
   }
 
   return (
-      <div>
-      <Helmet title="login" />
-
-      <div className="flex flex-col justify-center items-center space-y-2">
-        <h2 className="text-2xl text-slate-700 font-bold">Login</h2>
-      </div>
+      <div className="w-full max-w-2xl overflow-visible bg-gradient-to-l from-slate-300 to-slate-100 text-slate-600 border border-slate-300 grid grid-col-2 justify-center p-4 gap-4 rounded-lg shadow-md">
+      <Helmet title="Login" />
+      
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-4 space-y-3">
+        <div className="mt-14   flex flex-col justify-center items-center space-y-2" >
+          <h2 className="text-2xl text-slate-700 font-bold">Login</h2>
+        </div>
         <div>
           <label htmlFor="email">Email:</label>
           <input
